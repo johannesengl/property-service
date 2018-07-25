@@ -1,5 +1,14 @@
 # property_service
 
+### Documentation
+
+- Use gem activerecord-postgres-earthdistance to query properties within radius of a specific point
+- Add earthdistance_index to speed up queries
+- activerecord-postgres-earthdistance gem has good test coverage so its not necesarry to write own tests for the query method
+- Create PropertySearchValidation for validating the query parameters and adding error messages using ActiveModel::Validations
+- Added request specs to test api and unit test for PropertySearchValidation
+
+
 ### Background
 
 At Homeday, we are working to improve the process of selling real estate by giving real estate agents the best tools to do their job.

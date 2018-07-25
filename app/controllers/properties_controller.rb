@@ -3,9 +3,7 @@ class PropertiesController < ApplicationController
   before_action :validate_params
 
   def index
-    @properties = Property.within_radius(Property::PRICE_COMPARISSON_RADIUS_IN_METER, property_params[:lat], property_params[:lng]) if property_params[:lat] && property_params[:lng]
-    @properties = @properties.with_offer_type(property_params[:marketing_type]) if property_params[:marketing_type] && @properties.any?
-    @properties = @properties.with_property_type(property_params[:property_type]) if property_params[:property_type] && @properties.any?
+    @properties = build_query.all
 
     if @properties.empty?
       render json: {error: "No data for given parameters", status: "404"} and return
@@ -18,6 +16,14 @@ class PropertiesController < ApplicationController
 
   def property_params
     params.permit(:lng, :lat, :property_type, :marketing_type)
+  end
+
+  def build_query
+    query = Property
+    query = query.within_radius(Property::PRICE_COMPARISSON_RADIUS_IN_METER, property_params[:lat], property_params[:lng]) if property_params[:lat] && property_params[:lng]
+    query = query.with_offer_type(property_params[:marketing_type]) if property_params[:marketing_type]
+    query = query.with_property_type(property_params[:property_type]) if property_params[:property_type]
+    query
   end
 
   def validate_params

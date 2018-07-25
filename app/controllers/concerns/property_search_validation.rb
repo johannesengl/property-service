@@ -2,11 +2,11 @@ class PropertySearchValidation
 
   include ActiveModel::Validations
 
-  attr_accessor :lat, :lng, :marketing_type
+  attr_accessor :lat, :lng, :marketing_type, :property_type
 
   validates :lat, presence: true, numericality: true, :if => Proc.new { |q| q.lng.present? }
   validates :lng, presence: true, numericality: true, :if => Proc.new { |q| q.lat.present? }
-  validates :marketing_type, inclusion: ['rent', 'sell']
+  validates :marketing_type, inclusion: ['rent', 'sell'], :if => Proc.new { |q| q.marketing_type.present? }
 
   def initialize(params={})
     @lat, @lng, @marketing_type, @property_type = params[:lat], params[:lng], params[:marketing_type], params[:property_type]
